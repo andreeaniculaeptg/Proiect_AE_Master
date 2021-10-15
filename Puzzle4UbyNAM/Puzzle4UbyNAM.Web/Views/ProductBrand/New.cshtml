@@ -1,0 +1,9 @@
+﻿@model ProductBrandVM
+
+@{
+    ViewData["Title"] = "Create a product Brand";
+}
+
+@{ ViewBag.IsNew = true;}
+
+@await Html.PartialAsync(@"../Shared/Components/_ProductBrand.cshtml")

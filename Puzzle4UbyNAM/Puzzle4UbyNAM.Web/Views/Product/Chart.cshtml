@@ -1,0 +1,65 @@
+﻿@model IEnumerable<ProductVM>
+
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    var shoppingList = HttpContextAccessor.HttpContext.Session.Get<List<int>>(SessionHelper.ShoppingCart);
+    var shoppingCount = shoppingList == null ? 0 : shoppingList.Count;
+}
+
+
+@{ ViewData["Title"] = "Basket"; }
+
+<br />
+<br />
+
+<table id="table" class="table table-striped table-success">
+    <thead>
+        <tr>
+            <th hidden>Product Id</th>
+            <th>Product name</th>
+            <th>Price</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @{ var total = 0.0; }
+
+        @if (shoppingCount > 0)
+        {
+            @foreach (var item in shoppingList)
+            {
+                @foreach (var product in Model)
+                {
+                    @if (item == product.Id)
+                    {
+                        <tr id="@item.ToString()">
+                            <td>@product.Name</td>
+                            <td><b>Lei</b> @product.Price</td>
+                        </tr>
+                        total = total + (double)product.Price;
+                    }
+                }
+            }
+        }
+        <tr id="">
+            <td><b>Total Basket</b></td>
+            <td><b>Lei</b> @total</td>
+        </tr>
+
+    </tbody>
+
+</table>
+
+<div class="row">
+    <div class="col-xs-12 col-sm-2">
+        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-success">Back to List</a>
+    </div>
+    <div class="col-xs-12 col-sm-6"></div>
+    <div class="col-xs-12 col-sm-2">
+        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-info">Go To Pay</a>
+    </div>
+</div>
+
+
+
